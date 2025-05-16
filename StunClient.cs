@@ -580,17 +580,17 @@ namespace p2pcopy
             {
                 m_pReflectedFrom = ParseEndPoint(data, ref offset);
             }
+            // Unknown
+            else
+            {
+                offset += length;
+            }
             // XorMappedAddress
             // XorOnly
             // ServerName
             else if (type == AttributeType.ServerName)
             {
                 m_ServerName = Encoding.Default.GetString(data, offset, length);
-                offset += length;
-            }
-            // Unknown
-            else
-            {
                 offset += length;
             }
         }
