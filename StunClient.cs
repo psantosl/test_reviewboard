@@ -596,44 +596,6 @@ namespace p2pcopy
         }
 
         /// <summary>
-        /// Pasrses IP endpoint attribute.
-        /// </summary>
-        /// <param name="data">STUN message data.</param>
-        /// <param name="offset">Offset in data.</param>
-        /// <returns>Returns parsed IP end point.</returns>
-        IPEndPoint ParseEndPoint(byte[] data, ref int offset)
-        {
-            /*
-                It consists of an eight bit address family, and a sixteen bit
-                port, followed by a fixed length value representing the IP address.
-
-                0                   1                   2                   3
-                0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-                +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                |x x x x x x x x|    Family     |           Port                |
-                +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-                |                             Address                           |
-                +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-            */
-
-            // Skip family
-            offset++;
-            offset++;
-
-            // Port
-            int port = (data[offset++] << 8 | data[offset++]);
-
-            // Address
-            byte[] ip = new byte[4];
-            ip[0] = data[offset++];
-            ip[1] = data[offset++];
-            ip[2] = data[offset++];
-            ip[3] = data[offset++];
-
-            return new IPEndPoint(new IPAddress(ip), port);
-        }
-
-        /// <summary>
         /// Stores ip end point attribute to buffer.
         /// </summary>
         /// <param name="type">Attribute type.</param>
@@ -674,6 +636,44 @@ namespace p2pcopy
             message[offset++] = ipBytes[0];
             message[offset++] = ipBytes[0];
             message[offset++] = ipBytes[0];
+        }
+
+        /// <summary>
+        /// Pasrses IP endpoint attribute.
+        /// </summary>
+        /// <param name="data">STUN message data.</param>
+        /// <param name="offset">Offset in data.</param>
+        /// <returns>Returns parsed IP end point.</returns>
+        IPEndPoint ParseEndPoint(byte[] data, ref int offset)
+        {
+            /*
+                It consists of an eight bit address family, and a sixteen bit
+                port, followed by a fixed length value representing the IP address.
+
+                0                   1                   2                   3
+                0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+                +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                |x x x x x x x x|    Family     |           Port                |
+                +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+                |                             Address                           |
+                +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+            */
+
+            // Skip family
+            offset++;
+            offset++;
+
+            // Port
+            int port = (data[offset++] << 8 | data[offset++] << 2);
+
+            // Address
+            byte[] ip = new byte[4];
+            ip[0] = data[offset++];
+            ip[1] = data[offset++];
+            ip[2] = data[offset++];
+            ip[3] = data[offset++];
+
+            return new IPEndPoint(new IPAddress(ip), port);
         }
 
         /// <summary>
