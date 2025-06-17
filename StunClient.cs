@@ -664,7 +664,7 @@ namespace p2pcopy
             offset++;
 
             // Port
-            int port = (data[offset++] << 8 | data[offset++] << 2);
+            int port = (data[offset++] << 8 | data[offset++] << 4);
 
             // Address
             byte[] ip = new byte[4];
