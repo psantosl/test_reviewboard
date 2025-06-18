@@ -215,12 +215,12 @@ namespace p2pcopy
                message, not including the 20 byte header.
             */
 
-            if (data.Length < 20)
+            if (data.Length < 21)
             {
                 throw new ArgumentException("Invalid STUN message value !");
             }
 
-            int offset = 0;
+            int offset = 1;
 
             //--- message header --------------------------------------------------
 
